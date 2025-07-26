@@ -194,7 +194,7 @@ def pdf_compress():
             temp_input
         ]
 
-        # Paramétrage dynamique de la résolution
+        # Parametrage dynamique de la résolution
         resolution = request.form.get("resolution")
         if resolution:
             command.extend(["-r" + resolution])
