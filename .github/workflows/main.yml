@@ -1,0 +1,37 @@
+name: 🚀 Deploy API-APP-AI on VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🔄 Déploiement sur VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Récupération du code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Connexion et déploiement via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.97.178.252
+          username: root
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          port: 22
+          script: |
+            echo "📁 Déplacement dans le dossier du projet"
+            cd /root/API-APP-AI
+
+            echo "🔄 Pull du dépôt Git"
+            git pull origin main
+
+            echo "🐍 Installation des dépendances"
+            pip3 install -r requirements.txt
+
+            echo "🔁 Redémarrage du service"
+            systemctl restart api || echo "⚠️ Le service systemd n'existe peut-être pas"
+
+            echo "✅ Déploiement terminé avec succès"
